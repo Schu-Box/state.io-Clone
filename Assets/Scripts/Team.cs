@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Team
+public class Team : MonoBehaviour
 {
     public Color teamColor;
 }

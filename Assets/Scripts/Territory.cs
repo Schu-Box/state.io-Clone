@@ -43,5 +43,23 @@ public class Territory : MonoBehaviour
     public void UpdateTroopCounter()
 	{
 		troopCounterText.text = troops.ToString();
+
+        UpdateTerritoryVisuals();
 	}
+
+    public void UpdateTerritoryVisuals()
+    {
+        Color minimumControlColor = Color.white;
+        Color maximumControlColor = Color.grey;
+        if (teamOccupier != null)
+		{
+            minimumControlColor = Color.Lerp(teamOccupier.teamColor, Color.white, 0.7f); //Minimum color will be nearly white, but still retaining some of the team's color
+			maximumControlColor = teamOccupier.teamColor;
+		}
+
+        float percentTowardsMaxControl = (float)troops / (float)troopMax;
+        Color newTerritoryColor = Color.Lerp(minimumControlColor, maximumControlColor, percentTowardsMaxControl);
+
+        fillImage.color = newTerritoryColor;
+    }
 }
