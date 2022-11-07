@@ -88,7 +88,7 @@ GameObject:
   - component: {fileID: 1716491000525087620}
   - component: {fileID: 8916676611382225429}
   m_Layer: 5
-  m_Name: Text (TMP)
+  m_Name: Troop Counter Text
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -302,6 +302,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fa03571093d15e440bf90df0fa5c9ced, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  fillImage: {fileID: 5714125586916844034}
+  troopCounterText: {fileID: 8916676611382225429}
+  troops: 10
+  troopIncreaseFrequency: 1
 --- !u!1 &9140211222252301891
 GameObject:
   m_ObjectHideFlags: 0
