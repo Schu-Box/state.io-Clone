@@ -33,7 +33,7 @@ public class Territory : MonoBehaviour, IDragHandler, IDropHandler
         troopIncreaseTimer = troopIncreaseFrequency;
         troopInvasionTimer = troopInvasionFrequency;
 
-		UpdateTroopCounter();
+		UpdateTerritoryVisuals();
     }
 
     private void Update()
@@ -47,7 +47,7 @@ public class Territory : MonoBehaviour, IDragHandler, IDropHandler
 
                 troops++;
 
-                UpdateTroopCounter();
+				UpdateTerritoryVisuals();
             }
         }
 
@@ -60,7 +60,7 @@ public class Territory : MonoBehaviour, IDragHandler, IDropHandler
 
                 SendTroop();
 
-                UpdateTroopCounter();
+				UpdateTerritoryVisuals();
 
                 if(troops == 0) //If the last troop has been sent, end the invasion
                 {
@@ -90,16 +90,11 @@ public class Territory : MonoBehaviour, IDragHandler, IDropHandler
         return false;
     }
 
-    public void UpdateTroopCounter()
-	{
-		troopCounterText.text = troops.ToString();
-
-        UpdateTerritoryVisuals();
-	}
-
     public void UpdateTerritoryVisuals()
     {
-        Color minimumControlColor = Color.white;
+		troopCounterText.text = troops.ToString();
+
+		Color minimumControlColor = Color.white;
         Color maximumControlColor = Color.grey;
         if (teamController != null)
 		{
@@ -125,26 +120,50 @@ public class Territory : MonoBehaviour, IDragHandler, IDropHandler
 
         if(invader != null)
         {
-            invader.InvadeTerritory(this);
+            invader.SetNewActiveInvasionTarget(this);
         }
-    }
+	}
+	#endregion
 
-    public void InvadeTerritory(Territory invasionTarget)
+	public void SetNewActiveInvasionTarget(Territory invasionTarget)
     {
         Debug.Log("Sending troops from " + gameObject.name + " to " + invasionTarget.name);
 
         activeInvasionTarget = invasionTarget;
-
-
     }
 
     public void SendTroop()
     {
         troops--;
 
-        Instantiate(gameController.troopPrefab, gameController.troopParent);
-
-        //TODO: Move troops from this territory to invaded territory
+        Troop newTroop = Instantiate(gameController.troopPrefab, transform.position, Quaternion.identity, gameController.troopParent).GetComponent<Troop>();
+        newTroop.SetTeamController(teamController);
+        newTroop.SetNewTargetTerritory(activeInvasionTarget);
     }
-    #endregion
+
+    public void Invade(Troop troop)
+    {
+        if(teamController == troop.teamController) //If the invading troop is on the same team as this territory's teamController
+        {
+            troops++;
+        }
+        else //If the invading troop is an opponent
+        {
+            if(troops == 0)
+            {
+                SetNewTeamController(troop.teamController);
+            }
+            else
+			{
+				troops--;
+			}
+		}
+
+		UpdateTerritoryVisuals();
+    }
+
+    public void SetNewTeamController(Team newTeamController)
+    {
+        teamController = newTeamController;
+    }
 }
