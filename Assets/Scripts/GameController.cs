@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class GameController : MonoBehaviour
 {
+	public GameObject troopPrefab;
+	public Transform troopParent;
 
 	public void Start()
 	{

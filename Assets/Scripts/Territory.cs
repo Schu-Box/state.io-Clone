@@ -1,10 +1,12 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.UI;
 using TMPro;
+using Unity.VisualScripting.Antlr3.Runtime.Tree;
 
-public class Territory : MonoBehaviour
+public class Territory : MonoBehaviour, IDragHandler, IDropHandler
 {
     public Image fillImage;
     public TextMeshProUGUI troopCounterText;
@@ -18,9 +20,18 @@ public class Territory : MonoBehaviour
     public float troopIncreaseFrequency = 1f;
     private float troopIncreaseTimer;
 
-    private void Start()
+    public float troopInvasionFrequency = 0.2f;
+    public float troopInvasionTimer;
+
+    private GameController gameController;
+	private Territory activeInvasionTarget;
+
+	private void Start()
     {
+        gameController = FindObjectOfType<GameController>();
+
         troopIncreaseTimer = troopIncreaseFrequency;
+        troopInvasionTimer = troopInvasionFrequency;
 
 		UpdateTroopCounter();
     }
@@ -37,6 +48,24 @@ public class Territory : MonoBehaviour
                 troops++;
 
                 UpdateTroopCounter();
+            }
+        }
+
+        if(activeInvasionTarget != null)
+        {
+            troopInvasionTimer -= Time.deltaTime;
+            if(troopInvasionTimer <= 0)
+            {
+                troopInvasionTimer = troopInvasionFrequency;
+
+                SendTroop();
+
+                UpdateTroopCounter();
+
+                if(troops == 0) //If the last troop has been sent, end the invasion
+                {
+                    activeInvasionTarget = null;
+                }
             }
         }
     }
@@ -83,4 +112,39 @@ public class Territory : MonoBehaviour
 
         fillImage.color = newTerritoryColor;
     }
+
+    #region Drag Controls
+    public void OnDrag(PointerEventData pointerEventData)
+    {
+        //Debug.Log("Dragging");
+    }
+
+    public void OnDrop(PointerEventData pointerEventData)
+    {
+        Territory invader = pointerEventData.pointerDrag.GetComponent<Territory>();
+
+        if(invader != null)
+        {
+            invader.InvadeTerritory(this);
+        }
+    }
+
+    public void InvadeTerritory(Territory invasionTarget)
+    {
+        Debug.Log("Sending troops from " + gameObject.name + " to " + invasionTarget.name);
+
+        activeInvasionTarget = invasionTarget;
+
+
+    }
+
+    public void SendTroop()
+    {
+        troops--;
+
+        Instantiate(gameController.troopPrefab, gameController.troopParent);
+
+        //TODO: Move troops from this territory to invaded territory
+    }
+    #endregion
 }
