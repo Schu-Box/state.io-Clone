@@ -9,10 +9,11 @@ public class Territory : MonoBehaviour
     public Image fillImage;
     public TextMeshProUGUI troopCounterText;
 
-    public Team teamOccupier;
+    public Team teamController;
 
     public int troops = 10;
     private int troopMax = 50;
+    private int troopMax_Uncontrolled = 10;
 
     public float troopIncreaseFrequency = 1f;
     private float troopIncreaseTimer;
@@ -26,18 +27,38 @@ public class Territory : MonoBehaviour
 
     private void Update()
     {
-        if(troops < troopMax) //If this territory isn't at max troop count
+        if (CanIncreaseTroops())
         {
-			troopIncreaseTimer -= Time.deltaTime;
-			if (troopIncreaseTimer <= 0)
-			{
+            troopIncreaseTimer -= Time.deltaTime;
+            if (troopIncreaseTimer <= 0)
+            {
                 troopIncreaseTimer = troopIncreaseFrequency;
 
                 troops++;
 
-				UpdateTroopCounter();
-			}
-		}
+                UpdateTroopCounter();
+            }
+        }
+    }
+
+    public bool CanIncreaseTroops()
+    {
+        if (teamController != null)
+        {
+            if (troops < troopMax)
+            {
+                return true;
+            }
+        }
+        else
+        {
+            if (troops < troopMax_Uncontrolled)
+            {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     public void UpdateTroopCounter()
@@ -51,10 +72,10 @@ public class Territory : MonoBehaviour
     {
         Color minimumControlColor = Color.white;
         Color maximumControlColor = Color.grey;
-        if (teamOccupier != null)
+        if (teamController != null)
 		{
-            minimumControlColor = Color.Lerp(teamOccupier.teamColor, Color.white, 0.7f); //Minimum color will be nearly white, but still retaining some of the team's color
-			maximumControlColor = teamOccupier.teamColor;
+            minimumControlColor = Color.Lerp(teamController.teamColor, Color.white, 0.7f); //Minimum color will be nearly white, but still retaining some of the team's color
+			maximumControlColor = teamController.teamColor;
 		}
 
         float percentTowardsMaxControl = (float)troops / (float)troopMax;
