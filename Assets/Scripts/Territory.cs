@@ -6,7 +6,7 @@ using UnityEngine.UI;
 using TMPro;
 using Unity.VisualScripting.Antlr3.Runtime.Tree;
 
-public class Territory : MonoBehaviour, IDragHandler, IDropHandler
+public class Territory : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler, IDropHandler
 {
     public Image fillImage;
     public TextMeshProUGUI troopCounterText;
@@ -32,8 +32,6 @@ public class Territory : MonoBehaviour, IDragHandler, IDropHandler
 
         troopIncreaseTimer = troopIncreaseFrequency;
         troopInvasionTimer = troopInvasionFrequency;
-
-		UpdateTerritoryVisuals();
     }
 
     private void Update()
@@ -109,16 +107,29 @@ public class Territory : MonoBehaviour, IDragHandler, IDropHandler
     }
 
     #region Drag Controls
-    public void OnDrag(PointerEventData pointerEventData)
+    public void OnBeginDrag(PointerEventData pointerEventData)
     {
-
+        if(teamController != null && teamController.userControlled)
+		{
+			gameController.dragIndicator.StartedDragging(transform.position);
+		}
     }
+
+    public void OnDrag(PointerEventData pointerEventData)
+	{
+		gameController.dragIndicator.Dragging();
+	}
+    
+    public void OnEndDrag(PointerEventData pointerEventData)
+    {
+		gameController.dragIndicator.StoppedDragging();
+	}
 
     public void OnDrop(PointerEventData pointerEventData)
     {
         Territory invader = pointerEventData.pointerDrag.GetComponent<Territory>();
 
-        if(invader != null && invader.teamController.userControlled && invader != this) //If the user is attempting an invasion and the target isn't itself
+        if(invader != null && invader.teamController != null && invader.teamController.userControlled && invader != this) //If the user is attempting an invasion and the target isn't itself
         {
             invader.SetNewActiveInvasionTarget(this);
         }
