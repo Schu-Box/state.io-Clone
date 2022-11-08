@@ -129,9 +129,16 @@ public class Territory : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDra
     {
         Territory invader = pointerEventData.pointerDrag.GetComponent<Territory>();
 
-        if(invader != null && invader.teamController != null && invader.teamController.userControlled && invader != this) //If the user is attempting an invasion and the target isn't itself
+        if (invader != null && invader.teamController != null && invader.teamController.userControlled) //If the user is attempting an invasion
         {
-            invader.SetNewActiveInvasionTarget(this);
+            if (invader == this) //If the invasion target is itself, cancel any active invasion
+            {
+                activeInvasionTarget = null;
+            }
+            else
+            {
+                invader.SetNewActiveInvasionTarget(this);
+            }
         }
 	}
 	#endregion
