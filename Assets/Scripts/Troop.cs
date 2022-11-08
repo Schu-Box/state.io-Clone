@@ -1,9 +1,12 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class Troop : MonoBehaviour
 {
+    public Image image;
+
     private float speed = 1f;
 
     private Territory targetTerritory;
@@ -21,9 +24,24 @@ public class Troop : MonoBehaviour
         }
     }
 
+    public void OnCollisionEnter2D(Collision2D collision)
+    {
+        Debug.Log("Collision entered");
+
+        Troop collidingTroop = collision.gameObject.GetComponent<Troop>();
+
+        if(collidingTroop != null)
+        {
+            DestroyTroop();
+            collidingTroop.DestroyTroop();
+        }
+    }
+
     public void SetTeamController(Team team)
     {
         teamController = team;
+
+        image.color = team.teamColor;
     }
 
     public void SetNewTargetTerritory(Territory newTarget)
@@ -35,8 +53,13 @@ public class Troop : MonoBehaviour
     {
         targetTerritory.Invade(this);
 
-        //TODO: animation
-
-        Destroy(gameObject);
+        DestroyTroop();
     }
+
+    public void DestroyTroop()
+    {
+		//TODO: animation
+
+		Destroy(gameObject);
+	}
 }
