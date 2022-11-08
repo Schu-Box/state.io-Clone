@@ -1034,6 +1034,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Territory (14)
       objectReference: {fileID: 0}
+    - target: {fileID: 6065493239313630092, guid: c93ff44aefb32ed4bb8b9a71458245e2, type: 3}
+      propertyPath: teamController
+      value: 
+      objectReference: {fileID: 1154879526}
     - target: {fileID: 7741695970877278849, guid: c93ff44aefb32ed4bb8b9a71458245e2, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5
@@ -1136,7 +1140,7 @@ GameObject:
   - component: {fileID: 1025541820}
   - component: {fileID: 1025541821}
   m_Layer: 0
-  m_Name: Player Team 2
+  m_Name: Team 2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1170,6 +1174,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   teamColor: {r: 0.8962264, g: 0.080322154, b: 0.080322154, a: 1}
+  userControlled: 0
 --- !u!1 &1048733399
 GameObject:
   m_ObjectHideFlags: 0
@@ -1201,6 +1206,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   troopPrefab: {fileID: 6718483395861218872, guid: ac39b10426ef4ff40aef66537bb859d3, type: 3}
   troopParent: {fileID: 2144453712}
+  territoryParent: {fileID: 1789093763}
+  territories: []
 --- !u!4 &1048733401
 Transform:
   m_ObjectHideFlags: 0
@@ -1215,6 +1222,7 @@ Transform:
   m_Children:
   - {fileID: 2096773129}
   - {fileID: 1025541820}
+  - {fileID: 1154879525}
   m_Father: {fileID: 0}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -1422,6 +1430,52 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 7741695970877278849, guid: c93ff44aefb32ed4bb8b9a71458245e2, type: 3}
   m_PrefabInstance: {fileID: 1148503424}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &1154879524
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1154879525}
+  - component: {fileID: 1154879526}
+  m_Layer: 0
+  m_Name: Team 3
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1154879525
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1154879524}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1048733401}
+  m_RootOrder: 2
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1154879526
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1154879524}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3f440a4982c1dd5458455f1a38ea4bea, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  teamColor: {r: 0.08957815, g: 0.5754717, b: 0.13079213, a: 1}
+  userControlled: 0
 --- !u!1001 &1486120519
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1862,7 +1916,7 @@ GameObject:
   - component: {fileID: 2096773129}
   - component: {fileID: 2096773130}
   m_Layer: 0
-  m_Name: Player Team 1
+  m_Name: Team 1 (Player)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1896,6 +1950,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   teamColor: {r: 0.1782218, g: 0.4218958, b: 0.8396226, a: 1}
+  userControlled: 1
 --- !u!1001 &2127158983
 PrefabInstance:
   m_ObjectHideFlags: 0

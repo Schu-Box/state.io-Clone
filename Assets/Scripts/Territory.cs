@@ -62,7 +62,7 @@ public class Territory : MonoBehaviour, IDragHandler, IDropHandler
 
 				UpdateTerritoryVisuals();
 
-                if(troops == 0) //If the last troop has been sent, end the invasion
+                if(troops <= 0) //If the last troop has been sent, end the invasion
                 {
                     activeInvasionTarget = null;
                 }
@@ -111,14 +111,14 @@ public class Territory : MonoBehaviour, IDragHandler, IDropHandler
     #region Drag Controls
     public void OnDrag(PointerEventData pointerEventData)
     {
-        //Debug.Log("Dragging");
+
     }
 
     public void OnDrop(PointerEventData pointerEventData)
     {
         Territory invader = pointerEventData.pointerDrag.GetComponent<Territory>();
 
-        if(invader != null)
+        if(invader != null && invader.teamController.userControlled && invader != this) //If the user is attempting an invasion and the target isn't itself
         {
             invader.SetNewActiveInvasionTarget(this);
         }
@@ -127,7 +127,7 @@ public class Territory : MonoBehaviour, IDragHandler, IDropHandler
 
 	public void SetNewActiveInvasionTarget(Territory invasionTarget)
     {
-        Debug.Log("Sending troops from " + gameObject.name + " to " + invasionTarget.name);
+        //Debug.Log("Sending troops from " + gameObject.name + " to " + invasionTarget.name);
 
         activeInvasionTarget = invasionTarget;
     }
@@ -149,7 +149,7 @@ public class Territory : MonoBehaviour, IDragHandler, IDropHandler
         }
         else //If the invading troop is an opponent
         {
-            if(troops == 0)
+            if(troops <= 0)
             {
                 SetNewTeamController(troop.teamController);
             }
