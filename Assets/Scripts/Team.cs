@@ -15,6 +15,8 @@ public class Team : MonoBehaviour
     private float computerActionFrequency; //Random frequency between min/max, determined after each action
     private float computerActionTimer;
 
+    private int computerInvasionTroopDifferentialThreshold = 4; //How many more troops the computer must have before considering invasion
+
     private GameController gameController;
 
     private void Start()
@@ -58,7 +60,7 @@ public class Team : MonoBehaviour
 
                 int troopDifferential = potentialAggressorTerritory.troops - potentialInvasionTargetTerritory.troops;
 
-				if (potentialInvasionTargetTerritory.teamController != this && troopDifferential > 1) //If the target territory isn't controlled by this team and has less troops
+				if (potentialInvasionTargetTerritory.teamController != this && troopDifferential > computerInvasionTroopDifferentialThreshold) //If the target territory isn't controlled by this team and has less troops
                 {
                     potentialActions.Add(new ComputerAction(potentialAggressorTerritory, potentialInvasionTargetTerritory, troopDifferential));
                 }
