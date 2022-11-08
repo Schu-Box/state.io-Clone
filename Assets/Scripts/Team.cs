@@ -70,23 +70,6 @@ public class Team : MonoBehaviour
         if(potentialActions.Count > 0)
         {
             ExecuteComputerAction(potentialActions[Random.Range(0, potentialActions.Count)]);
-
-            //Attempted to make it a bit more difficult by making the AI target the weakest territories. This makes it far too hard for this demo though. The ideal would likely be a mix of this + randomness
-            /*
-			ComputerAction highestTroopDifferentialAction = null;
-            int highestTroopDifferential = 0;
-            for(int i = 0; i < potentialActions.Count; i++)
-            {
-                ComputerAction potentialAction = potentialActions[i];
-                if (potentialAction.troopDifferential > highestTroopDifferential)
-                {
-                    highestTroopDifferential = potentialAction.troopDifferential;
-                    highestTroopDifferentialAction = potentialAction;
-                }
-            }
-
-            ExecuteComputerAction(highestTroopDifferentialAction);
-            */
         }
     }
 

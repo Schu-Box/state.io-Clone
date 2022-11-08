@@ -18,7 +18,7 @@ public class Troop : MonoBehaviour
         float step = speed * Time.deltaTime;
         transform.position = Vector3.MoveTowards(transform.position, targetTerritory.transform.position, step);
 
-        if(Vector3.Distance(transform.position, targetTerritory.transform.position) < 0.01f) //If the troop is nearly on top of the targetTerritory
+        if(Vector3.Distance(transform.position, targetTerritory.transform.position) < 0.1f) //If the troop is nearly on top of the targetTerritory
         {
             Invade();
         }
@@ -26,11 +26,9 @@ public class Troop : MonoBehaviour
 
     public void OnCollisionEnter2D(Collision2D collision)
     {
-        Debug.Log("Collision entered");
-
         Troop collidingTroop = collision.gameObject.GetComponent<Troop>();
 
-        if(collidingTroop != null)
+        if(collidingTroop != null && collidingTroop.teamController != teamController) //If colliding with an enemy troop
         {
             DestroyTroop();
             collidingTroop.DestroyTroop();
